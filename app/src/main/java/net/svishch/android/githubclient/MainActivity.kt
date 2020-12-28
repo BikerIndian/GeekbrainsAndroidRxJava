@@ -1,13 +1,11 @@
 package net.svishch.android.githubclient
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import net.svishch.android.githubclient.mvp.BtnIndexBase.Companion.btn1BaseIndex
-import net.svishch.android.githubclient.mvp.BtnIndexBase.Companion.btn2BaseIndex
-import net.svishch.android.githubclient.mvp.BtnIndexBase.Companion.btn3BaseIndex
+import net.svishch.android.githubclient.mvp.presenter.BtnIndexBase.Companion.btn1BaseIndex
+import net.svishch.android.githubclient.mvp.presenter.BtnIndexBase.Companion.btn2BaseIndex
+import net.svishch.android.githubclient.mvp.presenter.BtnIndexBase.Companion.btn3BaseIndex
 import net.svishch.android.githubclient.mvp.presenter.Presenter
 import net.svishch.android.githubclient.mvp.view.MainView
 

@@ -1,4 +1,4 @@
-package net.svishch.android.githubclient.mvp
+package net.svishch.android.githubclient.mvp.presenter
 
 public
 class BtnIndexBase {
