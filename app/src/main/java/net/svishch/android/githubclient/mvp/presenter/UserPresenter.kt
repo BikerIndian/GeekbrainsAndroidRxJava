@@ -16,6 +16,7 @@ class UserPresenter( val router: Router) : MvpPresenter<UserView>() {
     }
 
     fun backPressed(): Boolean {
+        router.exit()
         return true
     }
 }

@@ -34,8 +34,6 @@ class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) : MvpPr
         // Выбор пользователя
         usersListPresenter.itemClickListener = { itemView ->
 
-            // отсюда надо как-то перейти в другой фрагмент
-         //   Log.v("UsersPresenter", " onItemClick " +)
             router.replaceScreen(Screens.UserScreen(usersRepo.getUsers()[itemView.pos].login))
         }
     }

@@ -11,7 +11,6 @@ class Screens {
     }
     // Фрагмент окна для ввода логина и пароля
     class UserScreen(login: String) : SupportAppScreen() {
-        //override fun getFragment() = UserFragment.newInstance()
         private val userFragment =  UserFragment(login)
         override fun getFragment() = userFragment
     }
