@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/label_user"
         android:layout_toRightOf="@+id/label_user"
-        android:hint="@string/login_label_user"
+        android:hint="@string/login_user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/label_user"
         app:layout_constraintTop_toTopOf="@+id/label_user">
