@@ -6,6 +6,7 @@ import net.svishch.android.githubclient.mvp.model.entity.GithubUsersRepo
 import net.svishch.android.githubclient.mvp.presenter.list.IUserListPresenter
 import net.svishch.android.githubclient.mvp.view.UsersView
 import net.svishch.android.githubclient.mvp.view.list.UserItemView
+import net.svishch.android.githubclient.navigation.Screens
 import ru.terrakok.cicerone.Router
 
 class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) : MvpPresenter<UsersView>() {
@@ -30,8 +31,10 @@ class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) : MvpPr
         viewState.init()
         loadData()
 
-        usersListPresenter.itemClickListener = {itemView ->
-            // TODO:
+        // Выбор пользователя
+        usersListPresenter.itemClickListener = { itemView ->
+
+            router.replaceScreen(Screens.UserScreen(usersRepo.getUsers()[itemView.pos].login))
         }
     }
 
