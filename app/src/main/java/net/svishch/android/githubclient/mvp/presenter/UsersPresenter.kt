@@ -1,5 +1,6 @@
 package net.svishch.android.githubclient.mvp.presenter
 
+import io.reactivex.rxjava3.schedulers.Timed
 import moxy.MvpPresenter
 import net.svishch.android.githubclient.mvp.model.entity.GithubUser
 import net.svishch.android.githubclient.mvp.model.entity.GithubUsersRepo
@@ -34,13 +35,13 @@ class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) : MvpPr
         // Выбор пользователя
         usersListPresenter.itemClickListener = { itemView ->
 
-            router.replaceScreen(Screens.UserScreen(usersRepo.getUsers()[itemView.pos].login))
+            router.replaceScreen(Screens.UserScreen(usersListPresenter.users[itemView.pos].login))
         }
     }
 
     private fun loadData() {
         val users =  usersRepo.getUsers()
-        usersListPresenter.users.addAll(users)
+        users.subscribe {usersListPresenter.users.add(it)}
         viewState.updateList()
     }
 

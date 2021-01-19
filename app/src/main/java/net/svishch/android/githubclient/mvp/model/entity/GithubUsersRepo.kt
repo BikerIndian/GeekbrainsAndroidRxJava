@@ -1,5 +1,6 @@
 package net.svishch.android.githubclient.mvp.model.entity
 
+import io.reactivex.rxjava3.core.Observable
 import net.svishch.android.githubclient.mvp.model.entity.GithubUser
 
 class GithubUsersRepo {
@@ -11,7 +12,7 @@ class GithubUsersRepo {
         GithubUser("login5")
     )
 
-    fun getUsers() : List<GithubUser> {
-        return repositories
+    fun getUsers() : Observable<GithubUser> {
+        return Observable.fromIterable(repositories)
     }
 }
