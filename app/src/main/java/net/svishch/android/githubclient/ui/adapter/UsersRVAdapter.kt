@@ -3,14 +3,16 @@ package net.svishch.android.githubclient.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_user.view.*
 import net.svishch.android.githubclient.R
+import net.svishch.android.githubclient.mvp.model.image.IImageLoader
 import net.svishch.android.githubclient.mvp.presenter.list.IUserListPresenter
 import net.svishch.android.githubclient.mvp.view.list.UserItemView
 
-class UsersRVAdapter(val presenter : IUserListPresenter) : RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
+class UsersRVAdapter(val presenter : IUserListPresenter, val imageLoader : IImageLoader<ImageView>) : RecyclerView.Adapter<UsersRVAdapter.ViewHolder>() {
 
     inner class ViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView),
         LayoutContainer, UserItemView {
@@ -18,6 +20,9 @@ class UsersRVAdapter(val presenter : IUserListPresenter) : RecyclerView.Adapter<
 
         override fun setLogin(text: String) = with(containerView) {
             tv_login.text = text
+        }
+        override fun loadAvatar(url: String) = with(containerView) {
+            imageLoader.loadInto(url, iv_avatar)
         }
     }
 

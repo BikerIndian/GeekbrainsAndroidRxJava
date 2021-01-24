@@ -1,16 +1,16 @@
 package net.svishch.android.githubclient.mvp.presenter
 
-import io.reactivex.rxjava3.schedulers.Timed
+import io.reactivex.rxjava3.core.Scheduler
 import moxy.MvpPresenter
 import net.svishch.android.githubclient.mvp.model.entity.GithubUser
-import net.svishch.android.githubclient.mvp.model.entity.GithubUsersRepo
+import net.svishch.android.githubclient.mvp.model.repo.IGithubUsersRepo
 import net.svishch.android.githubclient.mvp.presenter.list.IUserListPresenter
 import net.svishch.android.githubclient.mvp.view.UsersView
 import net.svishch.android.githubclient.mvp.view.list.UserItemView
 import net.svishch.android.githubclient.navigation.Screens
 import ru.terrakok.cicerone.Router
 
-class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) : MvpPresenter<UsersView>() {
+class UsersPresenter(val mainThreadScheduler: Scheduler, val usersRepo: IGithubUsersRepo, val router: Router) : MvpPresenter<UsersView>() {
 
     class UsersListPresenter : IUserListPresenter {
         val users = mutableListOf<GithubUser>()
@@ -21,7 +21,9 @@ class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) : MvpPr
 
         override fun bindView(view: UserItemView) {
             val user = users[view.pos]
-            view.setLogin(user.login)
+
+            user.login?.let { view.setLogin(it) }       // проверка на null так как работат с сетью
+            user.avatarUrl?.let {view.loadAvatar(it)}   // проверка на null так как работат с сетью
         }
     }
 
@@ -40,9 +42,15 @@ class UsersPresenter(val usersRepo: GithubUsersRepo, val router: Router) : MvpPr
     }
 
     private fun loadData() {
-        val users =  usersRepo.getUsers()
-        users.subscribe {usersListPresenter.users.add(it)}
-        viewState.updateList()
+        usersRepo.getUsers()
+            .observeOn(mainThreadScheduler)
+            .subscribe({ users ->
+                usersListPresenter.users.clear()
+                usersListPresenter.users.addAll(users)
+                viewState.updateList()
+            }, {
+                println("Error: ${it.message}")
+            })
     }
 
     fun backPressed(): Boolean {
