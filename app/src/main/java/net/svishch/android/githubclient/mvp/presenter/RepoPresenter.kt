@@ -7,6 +7,7 @@ import net.svishch.android.githubclient.mvp.model.entity.GithubRepository
 import net.svishch.android.githubclient.mvp.presenter.list.IRepoListPresenter
 import net.svishch.android.githubclient.mvp.view.UserRepoView
 import net.svishch.android.githubclient.mvp.view.list.RepoItemView
+import net.svishch.android.githubclient.navigation.Screens
 import ru.terrakok.cicerone.Router
 
 class RepoPresenter(private val mainThreadScheduler: Scheduler, private val router: Router, private val modelData: ModelData) : MvpPresenter<UserRepoView>() {
@@ -15,6 +16,9 @@ class RepoPresenter(private val mainThreadScheduler: Scheduler, private val rout
     // вызывается когда первый раз будет привязана любая View.
     override fun onFirstViewAttach() {
         viewState.init()
+        repoListPresenter.itemClickListener = { itemView ->
+            router.navigateTo(Screens.InfoScreen(repoListPresenter.getUser(itemView.pos)))
+        }
     }
 
     fun loadData(urlRepos: String) {
@@ -50,6 +54,10 @@ class RepoPresenter(private val mainThreadScheduler: Scheduler, private val rout
         fun update(repositories: List<GithubRepository>?) {
             repository.clear()
             repositories?.let { repository.addAll(it) }
+        }
+
+        fun getUser(pos: Int): GithubRepository {
+        return repository[pos]
         }
 
     }

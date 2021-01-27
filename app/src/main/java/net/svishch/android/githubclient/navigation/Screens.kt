@@ -1,6 +1,8 @@
 package net.svishch.android.githubclient.navigation
 
 
+import net.svishch.android.githubclient.mvp.model.entity.GithubRepository
+import net.svishch.android.githubclient.ui.fragments.InfoFragment
 import net.svishch.android.githubclient.ui.fragments.UserFragment
 import net.svishch.android.githubclient.ui.fragments.UserRepoFragment
 import net.svishch.android.githubclient.ui.fragments.UsersFragment
@@ -19,5 +21,10 @@ class Screens {
     class UserRepoScreen(urlRepo: String) : SupportAppScreen() {
         private val userRepoFragment =  UserRepoFragment(urlRepo)
         override fun getFragment() = userRepoFragment
+    }
+
+    class InfoScreen(user: GithubRepository) : SupportAppScreen() {
+        private val infoFragment =  InfoFragment(user)
+        override fun getFragment() = infoFragment
     }
 }

@@ -12,5 +12,8 @@
     <string name="login_pass">введите пароль</string>
     <string name="login_btn">Войти</string>
 
+    <string name="info_id">ID:</string>
+    <string name="info_title">NAME:</string>
+    <string name="info_forks">FORKS:</string>
     Пользователь:
 </resources>
