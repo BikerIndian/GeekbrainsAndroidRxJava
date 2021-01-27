@@ -12,6 +12,7 @@ import moxy.ktx.moxyPresenter
 import net.svishch.android.githubclient.ApiHolder
 import net.svishch.android.githubclient.App
 import net.svishch.android.githubclient.R
+import net.svishch.android.githubclient.mvp.model.ModelDataProviders
 import net.svishch.android.githubclient.mvp.presenter.UsersPresenter
 import net.svishch.android.githubclient.mvp.view.UsersView
 import net.svishch.android.githubclient.ui.BackButtonListener
@@ -24,15 +25,18 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         fun newInstance() = UsersFragment()
     }
 
-    val presenter: UsersPresenter by moxyPresenter { UsersPresenter(
-        AndroidSchedulers.mainThread(),
-        RetrofitGithubUsersRepo(ApiHolder().api),
-        App.instance.router) }
+    val presenter: UsersPresenter by moxyPresenter {
+        UsersPresenter(
+                AndroidSchedulers.mainThread(),
+                App.instance.router,
+                ModelDataProviders.newInstance()
+        )
+    }
 
     var adapter: UsersRVAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-        View.inflate(context, R.layout.fragment_users, null)
+            View.inflate(context, R.layout.fragment_users, null)
 
     override fun init() {
         rv_users.layoutManager = LinearLayoutManager(context)
