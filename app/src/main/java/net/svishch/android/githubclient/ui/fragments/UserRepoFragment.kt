@@ -12,16 +12,14 @@ import moxy.ktx.moxyPresenter
 import net.svishch.android.githubclient.App
 import net.svishch.android.githubclient.R
 import net.svishch.android.githubclient.mvp.model.ModelDataProviders
+import net.svishch.android.githubclient.mvp.model.entity.GithubUser
 import net.svishch.android.githubclient.mvp.presenter.RepoPresenter
 import net.svishch.android.githubclient.mvp.view.UserRepoView
 import net.svishch.android.githubclient.ui.BackButtonListener
 import net.svishch.android.githubclient.ui.adapter.UsersRepoRVAdapter
 
 
-class UserRepoFragment(_urlRepo: String) : MvpAppCompatFragment(), UserRepoView, BackButtonListener {
-
-    val urlRepo: String = _urlRepo
-
+class UserRepoFragment(val user: GithubUser) : MvpAppCompatFragment(), UserRepoView, BackButtonListener {
 
     val presenter: RepoPresenter by moxyPresenter {
         RepoPresenter(
@@ -35,7 +33,7 @@ class UserRepoFragment(_urlRepo: String) : MvpAppCompatFragment(), UserRepoView,
 
     override fun init() {
 
-        presenter.loadData(urlRepo)
+        presenter.loadData(user)
 
         repos_name_recycle.layoutManager = LinearLayoutManager(context)
         adapter = UsersRepoRVAdapter(presenter.repoListPresenter)

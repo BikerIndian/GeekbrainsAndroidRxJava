@@ -1,12 +1,10 @@
-package ru.geekbrains.githubclient.mvp.model.entity.room
+package net.svishch.android.githubclient.mvp.model.entity.room
 
 import android.content.Context
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
-import ru.geekbrains.githubclient.mvp.model.entity.room.dao.RepositoryDao
-import ru.geekbrains.githubclient.mvp.model.entity.room.dao.UserDao
+import net.svishch.android.githubclient.mvp.model.entity.room.dao.RepositoryDao
+import net.svishch.android.githubclient.mvp.model.entity.room.dao.UserDao
 import java.lang.RuntimeException
 
 @androidx.room.Database(entities = [RoomGithubUser::class, RoomGithubRepository::class], version = 1)

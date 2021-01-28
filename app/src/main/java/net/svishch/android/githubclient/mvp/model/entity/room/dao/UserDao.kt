@@ -1,7 +1,7 @@
-package ru.geekbrains.githubclient.mvp.model.entity.room.dao
+package net.svishch.android.githubclient.mvp.model.entity.room.dao
 
 import androidx.room.*
-import ru.geekbrains.githubclient.mvp.model.entity.room.RoomGithubUser
+import net.svishch.android.githubclient.mvp.model.entity.room.RoomGithubUser
 
 @Dao
 interface UserDao {

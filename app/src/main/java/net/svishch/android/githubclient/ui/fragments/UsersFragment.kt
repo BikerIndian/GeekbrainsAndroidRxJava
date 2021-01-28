@@ -9,7 +9,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_users.*
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
-import net.svishch.android.githubclient.ApiHolder
 import net.svishch.android.githubclient.App
 import net.svishch.android.githubclient.R
 import net.svishch.android.githubclient.mvp.model.ModelDataProviders
@@ -18,7 +17,6 @@ import net.svishch.android.githubclient.mvp.view.UsersView
 import net.svishch.android.githubclient.ui.BackButtonListener
 import net.svishch.android.githubclient.ui.adapter.UsersRVAdapter
 import net.svishch.android.githubclient.ui.image.GlideImageLoader
-import net.svishch.android.githubclient.mvp.model.repo.retrofit.RetrofitGithubUsersRepo
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
     companion object {

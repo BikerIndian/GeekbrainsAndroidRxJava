@@ -1,4 +1,4 @@
-package ru.geekbrains.githubclient.mvp.model.entity.room
+package net.svishch.android.githubclient.mvp.model.entity.room
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

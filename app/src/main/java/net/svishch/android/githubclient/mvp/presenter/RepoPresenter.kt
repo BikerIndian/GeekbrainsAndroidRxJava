@@ -1,9 +1,12 @@
 package net.svishch.android.githubclient.mvp.presenter
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import net.svishch.android.githubclient.mvp.model.ModelData
 import net.svishch.android.githubclient.mvp.model.entity.GithubRepository
+import net.svishch.android.githubclient.mvp.model.entity.GithubUser
 import net.svishch.android.githubclient.mvp.presenter.list.IRepoListPresenter
 import net.svishch.android.githubclient.mvp.view.UserRepoView
 import net.svishch.android.githubclient.mvp.view.list.RepoItemView
@@ -21,14 +24,17 @@ class RepoPresenter(private val mainThreadScheduler: Scheduler, private val rout
         }
     }
 
-    fun loadData(urlRepos: String) {
+    fun loadData(user: GithubUser) {
 
-        modelData.getUsersRepositories(urlRepos)
-                .observeOn(mainThreadScheduler)
-                .subscribe { repositories ->
+        modelData.getUsersRepositories(user)
+                .subscribeOn(Schedulers.io())
+                .observeOn (mainThreadScheduler)
+                .subscribe ({ repositories ->
                     repoListPresenter.update(repositories)
                     viewState.updateList()
-                }
+                }, {
+                    println("Error: ${it.message}")
+                })
     }
 
     fun backPressed(): Boolean {

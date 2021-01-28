@@ -5,6 +5,6 @@ import net.svishch.android.githubclient.mvp.model.entity.GithubRepository
 import net.svishch.android.githubclient.mvp.model.entity.GithubUser
 
 interface ModelData {
-    fun getUsersRepositories(urlRepos: String): Single<List<GithubRepository>>
+    fun getUsersRepositories(user: GithubUser): Single<List<GithubRepository>>
     fun getUsers() : Single<List<GithubUser>>
 }
