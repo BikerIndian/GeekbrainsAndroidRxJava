@@ -13,7 +13,11 @@ import net.svishch.android.githubclient.mvp.view.list.RepoItemView
 import net.svishch.android.githubclient.navigation.Screens
 import ru.terrakok.cicerone.Router
 
-class RepoPresenter(private val mainThreadScheduler: Scheduler, private val router: Router, private val modelData: ModelData) : MvpPresenter<UserRepoView>() {
+class RepoPresenter(
+    private val mainThreadScheduler: Scheduler,
+    private val router: Router,
+    private val modelData: ModelData,
+) : MvpPresenter<UserRepoView>() {
     val repoListPresenter = RepoListPresenter()
 
     // вызывается когда первый раз будет привязана любая View.
@@ -27,14 +31,14 @@ class RepoPresenter(private val mainThreadScheduler: Scheduler, private val rout
     fun loadData(user: GithubUser) {
 
         modelData.getUsersRepositories(user)
-                .subscribeOn(Schedulers.io())
-                .observeOn (mainThreadScheduler)
-                .subscribe ({ repositories ->
-                    repoListPresenter.update(repositories)
-                    viewState.updateList()
-                }, {
-                    println("Error: ${it.message}")
-                })
+            ?.subscribeOn(Schedulers.io())
+            ?.observeOn(mainThreadScheduler)
+            ?.subscribe({ repositories ->
+                repoListPresenter.update(repositories)
+                viewState.updateList()
+            }, {
+                println("Error: ${it.message}")
+            })
     }
 
     fun backPressed(): Boolean {
@@ -63,7 +67,7 @@ class RepoPresenter(private val mainThreadScheduler: Scheduler, private val rout
         }
 
         fun getUser(pos: Int): GithubRepository {
-        return repository[pos]
+            return repository[pos]
         }
 
     }
