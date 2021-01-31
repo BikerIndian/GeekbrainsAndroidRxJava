@@ -1,4 +1,4 @@
-package ru.geekbrains.githubclient.ui.network
+package net.svishch.android.githubclient.mvp.model.network
 
 import android.content.Context
 import android.net.ConnectivityManager

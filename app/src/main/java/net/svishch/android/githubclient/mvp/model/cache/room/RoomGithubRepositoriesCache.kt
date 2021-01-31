@@ -7,7 +7,7 @@ import net.svishch.android.githubclient.mvp.model.entity.GithubRepository
 import net.svishch.android.githubclient.mvp.model.entity.GithubUser
 import net.svishch.android.githubclient.mvp.model.entity.room.Database
 import net.svishch.android.githubclient.mvp.model.entity.room.RoomGithubRepository
-import ru.geekbrains.githubclient.mvp.model.cache.IGithubRepositoriesCache
+import net.svishch.android.githubclient.mvp.model.cache.IGithubRepositoriesCache
 
 class RoomGithubRepositoriesCache(var db: Database) : IGithubRepositoriesCache {
 

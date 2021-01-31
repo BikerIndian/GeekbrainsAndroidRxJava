@@ -5,16 +5,16 @@ import net.svishch.android.githubclient.ApiHolder
 import net.svishch.android.githubclient.App
 import net.svishch.android.githubclient.mvp.model.entity.GithubRepository
 import net.svishch.android.githubclient.mvp.model.entity.GithubUser
-import net.svishch.android.githubclient.mvp.model.repo.IGithubRepo
+import net.svishch.android.githubclient.mvp.model.repo.IGithubRepositoriesRepo
 import net.svishch.android.githubclient.mvp.model.repo.IGithubUsersRepo
 import net.svishch.android.githubclient.mvp.model.repo.retrofit.RetrofitGithubRepositoriesRepo
 import net.svishch.android.githubclient.mvp.model.repo.retrofit.RetrofitGithubUsersRepo
 import net.svishch.android.githubclient.mvp.model.entity.room.Database
-import ru.geekbrains.githubclient.mvp.model.cache.IGithubRepositoriesCache
-import ru.geekbrains.githubclient.mvp.model.cache.IGithubUsersCache
+import net.svishch.android.githubclient.mvp.model.cache.IGithubRepositoriesCache
+import net.svishch.android.githubclient.mvp.model.cache.IGithubUsersCache
 import ru.geekbrains.githubclient.mvp.model.cache.room.RoomGithubRepositoriesCache
 import ru.geekbrains.githubclient.mvp.model.cache.room.RoomGithubUsersCache
-import ru.geekbrains.githubclient.ui.network.AndroidNetworkStatus
+import net.svishch.android.githubclient.mvp.model.network.AndroidNetworkStatus
 
 class ModelDataProviders : ModelData {
 
@@ -74,7 +74,7 @@ class ModelDataProviders : ModelData {
 
         // Получить репозитарий пользователя
         fun getUsersRepositories(user: GithubUser): Single<List<GithubRepository>>? {
-            val repo: IGithubRepo = RetrofitGithubRepositoriesRepo(ApiHolder().api)
+            val repo: IGithubRepositoriesRepo = RetrofitGithubRepositoriesRepo(ApiHolder().api)
             return user.reposUrl?.let { repo.getRepository(it) }
         }
     }

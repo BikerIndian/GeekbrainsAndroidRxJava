@@ -5,7 +5,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import net.svishch.android.githubclient.mvp.model.entity.GithubUser
 import net.svishch.android.githubclient.mvp.model.entity.room.Database
 import net.svishch.android.githubclient.mvp.model.entity.room.RoomGithubUser
-import ru.geekbrains.githubclient.mvp.model.cache.IGithubUsersCache
+import net.svishch.android.githubclient.mvp.model.cache.IGithubUsersCache
 
 class RoomGithubUsersCache(var db: Database) : IGithubUsersCache {
 
