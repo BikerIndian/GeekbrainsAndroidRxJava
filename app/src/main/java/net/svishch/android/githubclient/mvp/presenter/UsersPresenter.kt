@@ -1,6 +1,8 @@
 package net.svishch.android.githubclient.mvp.presenter
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
+import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import net.svishch.android.githubclient.mvp.model.ModelData
 import net.svishch.android.githubclient.mvp.model.entity.GithubUser
@@ -36,13 +38,14 @@ class UsersPresenter(private val mainThreadScheduler: Scheduler, private val rou
 
         // Выбор пользователя
         usersListPresenter.itemClickListener = { itemView ->
-            router.navigateTo(Screens.UserRepoScreen(usersListPresenter.users[itemView.pos].reposUrl.toString()))
+            router.navigateTo(Screens.UserRepoScreen(usersListPresenter.users[itemView.pos]))
         }
     }
 
     private fun loadData() {
         modelData.getUsers()
-                .observeOn(mainThreadScheduler)
+                .subscribeOn(Schedulers.io())
+                .observeOn (mainThreadScheduler)
                 .subscribe({ users ->
                     usersListPresenter.users.clear()
                     usersListPresenter.users.addAll(users)
