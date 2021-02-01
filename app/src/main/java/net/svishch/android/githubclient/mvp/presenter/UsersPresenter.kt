@@ -6,13 +6,21 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import net.svishch.android.githubclient.mvp.model.ModelData
 import net.svishch.android.githubclient.mvp.model.entity.GithubUser
+import net.svishch.android.githubclient.mvp.model.repo.IGithubUsersRepo
 import net.svishch.android.githubclient.mvp.presenter.list.IUserListPresenter
 import net.svishch.android.githubclient.mvp.view.UsersView
 import net.svishch.android.githubclient.mvp.view.list.UserItemView
 import net.svishch.android.githubclient.navigation.Screens
 import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
-class UsersPresenter(private val mainThreadScheduler: Scheduler, private val router: Router, private val modelData: ModelData) : MvpPresenter<UsersView>() {
+class UsersPresenter(private val mainThreadScheduler: Scheduler) : MvpPresenter<UsersView>() {
+
+    @Inject
+    lateinit var modelData: IGithubUsersRepo
+    @Inject
+    lateinit var router: Router
+
 
     class UsersListPresenter : IUserListPresenter {
         val users = mutableListOf<GithubUser>()

@@ -12,24 +12,32 @@ import moxy.ktx.moxyPresenter
 import net.svishch.android.githubclient.App
 import net.svishch.android.githubclient.R
 import net.svishch.android.githubclient.mvp.model.ModelDataProviders
+import net.svishch.android.githubclient.mvp.model.entity.room.Database
 import net.svishch.android.githubclient.mvp.presenter.UsersPresenter
 import net.svishch.android.githubclient.mvp.view.UsersView
 import net.svishch.android.githubclient.ui.BackButtonListener
 import net.svishch.android.githubclient.ui.adapter.UsersRVAdapter
 import net.svishch.android.githubclient.ui.image.GlideImageLoader
+import javax.inject.Inject
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
+
+    // ДЗ Избавиться от инъекции ниже
+    @Inject
+    lateinit var database: Database
+
     companion object {
-        fun newInstance() = UsersFragment()
+        fun newInstance() = UsersFragment().apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     val presenter: UsersPresenter by moxyPresenter {
-        UsersPresenter(
-                AndroidSchedulers.mainThread(),
-                App.instance.router,
-                ModelDataProviders.newInstance()
-        )
+        UsersPresenter(AndroidSchedulers.mainThread()).apply {
+            App.instance.appComponent.inject(this)
+        }
     }
+
 
     var adapter: UsersRVAdapter? = null
 

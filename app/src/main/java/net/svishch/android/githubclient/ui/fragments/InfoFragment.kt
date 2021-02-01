@@ -10,19 +10,47 @@ import moxy.ktx.moxyPresenter
 import net.svishch.android.githubclient.App
 import net.svishch.android.githubclient.R
 import net.svishch.android.githubclient.mvp.model.entity.GithubRepository
+import net.svishch.android.githubclient.mvp.model.entity.GithubUser
 import net.svishch.android.githubclient.mvp.presenter.InfoPresenter
 import net.svishch.android.githubclient.mvp.view.InfoView
 import net.svishch.android.githubclient.ui.BackButtonListener
+import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 
-class InfoFragment(private var user: GithubRepository) : MvpAppCompatFragment(), InfoView, BackButtonListener {
+class InfoFragment() : MvpAppCompatFragment(), InfoView,
+    BackButtonListener {
 
-    val presenter: InfoPresenter by moxyPresenter { InfoPresenter(App.instance.router) }
+    @Inject
+    lateinit var router: Router
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            View.inflate(context, R.layout.fragment_info_user, null)
+    companion object {
+        private const val USER_ARG = "userRepository"
+
+        fun newInstance(user: GithubRepository) = InfoFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(USER_ARG, user)
+            }
+            App.instance.appComponent.inject(this)
+        }
+    }
+
+    val presenter: InfoPresenter by moxyPresenter {
+        InfoPresenter(router).apply {
+            App.instance.appComponent.inject(this)
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ) =
+        View.inflate(context, R.layout.fragment_info_user, null)
 
     override fun init() {
+        val user = arguments?.getParcelable<GithubRepository>(USER_ARG) as GithubRepository
+
         setId(user.id)
         setName(user.name.toString())
         setForks(user.forksCount.toString())

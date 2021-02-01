@@ -34,11 +34,4 @@ class App : Application() {
         Database.create(instance)
         ModelDataProviders.initNetMonitor()
     }
-
-    val navigatorHolder
-        get() = cicerone.navigatorHolder
-
-    val router
-        get() = cicerone.router
-
 }
