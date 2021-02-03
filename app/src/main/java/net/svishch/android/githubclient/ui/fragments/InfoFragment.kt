@@ -10,19 +10,13 @@ import moxy.ktx.moxyPresenter
 import net.svishch.android.githubclient.App
 import net.svishch.android.githubclient.R
 import net.svishch.android.githubclient.mvp.model.entity.GithubRepository
-import net.svishch.android.githubclient.mvp.model.entity.GithubUser
 import net.svishch.android.githubclient.mvp.presenter.InfoPresenter
 import net.svishch.android.githubclient.mvp.view.InfoView
 import net.svishch.android.githubclient.ui.BackButtonListener
-import ru.terrakok.cicerone.Router
-import javax.inject.Inject
 
 
 class InfoFragment() : MvpAppCompatFragment(), InfoView,
     BackButtonListener {
-
-    @Inject
-    lateinit var router: Router
 
     companion object {
         private const val USER_ARG = "userRepository"
@@ -31,12 +25,11 @@ class InfoFragment() : MvpAppCompatFragment(), InfoView,
             arguments = Bundle().apply {
                 putParcelable(USER_ARG, user)
             }
-            App.instance.appComponent.inject(this)
         }
     }
 
     val presenter: InfoPresenter by moxyPresenter {
-        InfoPresenter(router).apply {
+        InfoPresenter().apply {
             App.instance.appComponent.inject(this)
         }
     }

@@ -24,7 +24,7 @@ class RoomGithubRepositoriesCache(var db: Database) : IGithubRepositoriesCache {
 
     override fun repoUpdate(user: GithubUser, repo: Single<List<GithubRepository>>?) {
         repo?.observeOn(Schedulers.io())?.subscribe { repositories ->
-            val roomUser = user.login?.let { ModelDataProviders.db.userDao.findByLogin(it) }
+            val roomUser = user.login?.let { db.userDao.findByLogin(it) }
                 ?: throw RuntimeException("No such user in cache")
             val roomRepos = repositories.map {
                 RoomGithubRepository(it.id ?: "",
@@ -32,7 +32,7 @@ class RoomGithubRepositoriesCache(var db: Database) : IGithubRepositoriesCache {
                     it.forksCount ?: 0,
                     roomUser.id)
             }
-            ModelDataProviders.db.repositoryDao.insert(roomRepos)
+            db.repositoryDao.insert(roomRepos)
         }
     }
 }

@@ -11,25 +11,16 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import net.svishch.android.githubclient.App
 import net.svishch.android.githubclient.R
-import net.svishch.android.githubclient.mvp.model.ModelDataProviders
-import net.svishch.android.githubclient.mvp.model.entity.room.Database
 import net.svishch.android.githubclient.mvp.presenter.UsersPresenter
 import net.svishch.android.githubclient.mvp.view.UsersView
 import net.svishch.android.githubclient.ui.BackButtonListener
 import net.svishch.android.githubclient.ui.adapter.UsersRVAdapter
 import net.svishch.android.githubclient.ui.image.GlideImageLoader
-import javax.inject.Inject
 
 class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
 
-    // ДЗ Избавиться от инъекции ниже
-    @Inject
-    lateinit var database: Database
-
     companion object {
-        fun newInstance() = UsersFragment().apply {
-            App.instance.appComponent.inject(this)
-        }
+        fun newInstance() = UsersFragment()
     }
 
     val presenter: UsersPresenter by moxyPresenter {
@@ -38,11 +29,13 @@ class UsersFragment : MvpAppCompatFragment(), UsersView, BackButtonListener {
         }
     }
 
-
     var adapter: UsersRVAdapter? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            View.inflate(context, R.layout.fragment_users, null)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ) = View.inflate(context, R.layout.fragment_users, null)
 
     override fun init() {
         rv_users.layoutManager = LinearLayoutManager(context)

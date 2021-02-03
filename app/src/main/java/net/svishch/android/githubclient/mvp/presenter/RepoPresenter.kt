@@ -1,6 +1,5 @@
 package net.svishch.android.githubclient.mvp.presenter
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
@@ -12,12 +11,16 @@ import net.svishch.android.githubclient.mvp.view.UserRepoView
 import net.svishch.android.githubclient.mvp.view.list.RepoItemView
 import net.svishch.android.githubclient.navigation.Screens
 import ru.terrakok.cicerone.Router
+import javax.inject.Inject
 
 class RepoPresenter(
     private val mainThreadScheduler: Scheduler,
-    private val router: Router,
     private val modelData: ModelData,
 ) : MvpPresenter<UserRepoView>() {
+
+    @Inject
+    lateinit var router: Router
+
     val repoListPresenter = RepoListPresenter()
 
     // вызывается когда первый раз будет привязана любая View.

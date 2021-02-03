@@ -14,8 +14,6 @@ class Screens {
     }
 
     class UserRepoScreen(val user: GithubUser) : SupportAppScreen() {
-      //  private val userRepoFragment =  UserRepoFragment(user)
-      //   override fun getFragment() = userRepoFragment
       override fun getFragment() = UserRepoFragment.newInstance(user)
     }
 
