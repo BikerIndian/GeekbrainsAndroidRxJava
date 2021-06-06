@@ -15,14 +15,35 @@ import net.svishch.android.githubclient.mvp.view.InfoView
 import net.svishch.android.githubclient.ui.BackButtonListener
 
 
-class InfoFragment(private var user: GithubRepository) : MvpAppCompatFragment(), InfoView, BackButtonListener {
+class InfoFragment() : MvpAppCompatFragment(), InfoView,
+    BackButtonListener {
 
-    val presenter: InfoPresenter by moxyPresenter { InfoPresenter(App.instance.router) }
+    companion object {
+        private const val USER_ARG = "userRepository"
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            View.inflate(context, R.layout.fragment_info_user, null)
+        fun newInstance(user: GithubRepository) = InfoFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(USER_ARG, user)
+            }
+        }
+    }
+
+    val presenter: InfoPresenter by moxyPresenter {
+        InfoPresenter().apply {
+            App.instance.appComponent.inject(this)
+        }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ) =
+        View.inflate(context, R.layout.fragment_info_user, null)
 
     override fun init() {
+        val user = arguments?.getParcelable<GithubRepository>(USER_ARG) as GithubRepository
+
         setId(user.id)
         setName(user.name.toString())
         setForks(user.forksCount.toString())

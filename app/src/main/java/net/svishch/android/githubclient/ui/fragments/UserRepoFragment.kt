@@ -19,19 +19,36 @@ import net.svishch.android.githubclient.ui.BackButtonListener
 import net.svishch.android.githubclient.ui.adapter.UsersRepoRVAdapter
 
 
-class UserRepoFragment(val user: GithubUser) : MvpAppCompatFragment(), UserRepoView, BackButtonListener {
+class UserRepoFragment() : MvpAppCompatFragment(), UserRepoView, BackButtonListener {
+
+    companion object {
+        private const val USER_ARG = "user"
+
+        fun newInstance(user: GithubUser) = UserRepoFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(USER_ARG, user)
+            }
+        }
+    }
 
     val presenter: RepoPresenter by moxyPresenter {
         RepoPresenter(
-                AndroidSchedulers.mainThread(), App.instance.router, ModelDataProviders.newInstance()
-        )
+            AndroidSchedulers.mainThread(), ModelDataProviders.newInstance()
+        ).apply {
+            App.instance.appComponent.inject(this)
+        }
     }
+
     var adapter: UsersRepoRVAdapter? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
-            View.inflate(context, R.layout.repos_list, null)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ) = View.inflate(context, R.layout.repos_list, null)
 
     override fun init() {
+        val user = arguments?.getParcelable<GithubUser>(USER_ARG) as GithubUser
 
         presenter.loadData(user)
 

@@ -7,7 +7,7 @@ import net.svishch.android.githubclient.mvp.model.entity.GithubRepository
 import net.svishch.android.githubclient.mvp.model.entity.GithubUser
 import net.svishch.android.githubclient.mvp.model.entity.room.Database
 import net.svishch.android.githubclient.mvp.model.entity.room.RoomGithubRepository
-import ru.geekbrains.githubclient.mvp.model.cache.IGithubRepositoriesCache
+import net.svishch.android.githubclient.mvp.model.cache.IGithubRepositoriesCache
 
 class RoomGithubRepositoriesCache(var db: Database) : IGithubRepositoriesCache {
 
@@ -24,7 +24,7 @@ class RoomGithubRepositoriesCache(var db: Database) : IGithubRepositoriesCache {
 
     override fun repoUpdate(user: GithubUser, repo: Single<List<GithubRepository>>?) {
         repo?.observeOn(Schedulers.io())?.subscribe { repositories ->
-            val roomUser = user.login?.let { ModelDataProviders.db.userDao.findByLogin(it) }
+            val roomUser = user.login?.let { db.userDao.findByLogin(it) }
                 ?: throw RuntimeException("No such user in cache")
             val roomRepos = repositories.map {
                 RoomGithubRepository(it.id ?: "",
@@ -32,7 +32,7 @@ class RoomGithubRepositoriesCache(var db: Database) : IGithubRepositoriesCache {
                     it.forksCount ?: 0,
                     roomUser.id)
             }
-            ModelDataProviders.db.repositoryDao.insert(roomRepos)
+            db.repositoryDao.insert(roomRepos)
         }
     }
 }

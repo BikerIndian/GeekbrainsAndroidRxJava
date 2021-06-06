@@ -1,4 +1,4 @@
-package ru.geekbrains.githubclient.mvp.model.cache
+package net.svishch.android.githubclient.mvp.model.cache
 
 import io.reactivex.rxjava3.core.Single
 import net.svishch.android.githubclient.mvp.model.entity.GithubRepository

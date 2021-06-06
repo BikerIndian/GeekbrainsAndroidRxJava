@@ -3,27 +3,28 @@ package net.svishch.android.githubclient.mvp.model
 import io.reactivex.rxjava3.core.Single
 import net.svishch.android.githubclient.ApiHolder
 import net.svishch.android.githubclient.App
+import net.svishch.android.githubclient.mvp.model.db.DataDb
 import net.svishch.android.githubclient.mvp.model.entity.GithubRepository
 import net.svishch.android.githubclient.mvp.model.entity.GithubUser
-import net.svishch.android.githubclient.mvp.model.repo.IGithubRepo
+import net.svishch.android.githubclient.mvp.model.network.AndroidNetworkStatus
+import net.svishch.android.githubclient.mvp.model.repo.IGithubRepositoriesRepo
 import net.svishch.android.githubclient.mvp.model.repo.IGithubUsersRepo
 import net.svishch.android.githubclient.mvp.model.repo.retrofit.RetrofitGithubRepositoriesRepo
 import net.svishch.android.githubclient.mvp.model.repo.retrofit.RetrofitGithubUsersRepo
-import net.svishch.android.githubclient.mvp.model.entity.room.Database
-import ru.geekbrains.githubclient.mvp.model.cache.IGithubRepositoriesCache
-import ru.geekbrains.githubclient.mvp.model.cache.IGithubUsersCache
-import ru.geekbrains.githubclient.mvp.model.cache.room.RoomGithubRepositoriesCache
-import ru.geekbrains.githubclient.mvp.model.cache.room.RoomGithubUsersCache
-import ru.geekbrains.githubclient.ui.network.AndroidNetworkStatus
+import javax.inject.Inject
 
 class ModelDataProviders : ModelData {
 
+    @Inject
+    lateinit var dataDb: DataDb
 
     // Работа с данными
     companion object {
-        var db = Database.getInstance()
         var networkStatus = false
-        fun newInstance() = ModelDataProviders()
+        fun newInstance() = ModelDataProviders().apply {
+            App.instance.appComponent.inject(this)
+        }
+
         fun initNetMonitor() {
             AndroidNetworkStatus(App.instance).isOnline().subscribe {
                 networkStatus = it
@@ -32,7 +33,6 @@ class ModelDataProviders : ModelData {
     }
 
     private var dataApi = NetworkApi()
-    private var dataDb = DataDb()
 
     // получить список пользователей
     override fun getUsers(): Single<List<GithubUser>> {
@@ -74,22 +74,11 @@ class ModelDataProviders : ModelData {
 
         // Получить репозитарий пользователя
         fun getUsersRepositories(user: GithubUser): Single<List<GithubRepository>>? {
-            val repo: IGithubRepo = RetrofitGithubRepositoriesRepo(ApiHolder().api)
+            val repo: IGithubRepositoriesRepo = RetrofitGithubRepositoriesRepo(ApiHolder().api)
             return user.reposUrl?.let { repo.getRepository(it) }
         }
     }
 
-    // Работа с базой данных
-    class DataDb() {
-        var usersCache : IGithubUsersCache = RoomGithubUsersCache(db)
-        var repositoriesCache : IGithubRepositoriesCache = RoomGithubRepositoriesCache(db)
-
-        fun getUsers(): Single<List<GithubUser>> = usersCache.getUsers()
-        fun getUsersRepositories(user: GithubUser): Single<List<GithubRepository>>? = repositoriesCache.getUsersRepositories(user)
-
-        fun usersUpdate(users: Single<List<GithubUser>>) = usersCache.usersUpdate(users)
-        fun repoUpdate(user: GithubUser, repo: Single<List<GithubRepository>>?)= repositoriesCache.repoUpdate(user,repo)
-    }
 
 }
 

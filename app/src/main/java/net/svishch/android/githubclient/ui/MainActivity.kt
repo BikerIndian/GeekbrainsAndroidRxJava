@@ -7,19 +7,30 @@ import net.svishch.android.githubclient.App
 import net.svishch.android.githubclient.R
 import net.svishch.android.githubclient.mvp.presenter.MainPresenter
 import net.svishch.android.githubclient.mvp.view.MainView
+import ru.terrakok.cicerone.NavigatorHolder
 import ru.terrakok.cicerone.android.support.SupportAppNavigator
+import javax.inject.Inject
 
 class MainActivity : MvpAppCompatActivity(), MainView {
-    val navigatorHolder = App.instance.navigatorHolder
+
+    @Inject
+    lateinit var navigatorHolder: NavigatorHolder
+
     val navigator = SupportAppNavigator(this, supportFragmentManager, R.id.container)
 
     private val presenter by moxyPresenter {
-        MainPresenter(App.instance.router)
+        MainPresenter().apply {
+            App.instance.appComponent.inject(this)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        // Dagger
+        App.instance.appComponent.inject(this)
+
     }
 
     override fun onResumeFragments() {
