@@ -31,7 +31,7 @@ class UsersPresenter(private val mainThreadScheduler: Scheduler, private val rou
 
     val usersListPresenter = UsersListPresenter()
 
-    override fun onFirstViewAttach() {
+    public override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
         loadData()
